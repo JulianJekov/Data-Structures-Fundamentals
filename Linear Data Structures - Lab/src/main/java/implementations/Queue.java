@@ -1,41 +1,50 @@
 package implementations;
 
-import interfaces.AbstractStack;
+import interfaces.AbstractQueue;
 
 import java.util.Iterator;
 
-public class Stack<E> implements AbstractStack<E> {
+public class Queue<E> implements AbstractQueue<E> {
 
-    private Node<E> top;
+    private Node<E> head;
     private int size;
 
     private static class Node<E> {
-        private Node<E> prev;
-        private final E value;
+        private Node<E> next;
+        private E value;
 
-        public Node(E value) {
+        private Node(E value) {
             this.value = value;
         }
     }
 
-    public Stack() {
-        this.top = null;
+    public Queue() {
+        this.head = null;
         this.size = 0;
     }
 
     @Override
-    public void push(E element) {
-        Node<E> toAdd = new Node<>(element);
-        toAdd.prev = this.top;
-        this.top = toAdd;
+    public void offer(E element) {
+        Node<E> newNode = new Node<>(element);
+
+        if (this.isEmpty()) {
+            this.head = newNode;
+        } else {
+            Node<E> current = this.head;
+
+            while (current.next != null) {
+                current = current.next;
+            }
+            current.next = newNode;
+        }
         this.size++;
     }
 
     @Override
-    public E pop() {
+    public E poll() {
         ensureNonEmpty();
-        Node<E> tmp = this.top;
-        this.top = tmp.prev;
+        Node<E> tmp = this.head;
+        this.head = tmp.next;
         this.size--;
         return tmp.value;
     }
@@ -44,7 +53,7 @@ public class Stack<E> implements AbstractStack<E> {
     @Override
     public E peek() {
         ensureNonEmpty();
-        return this.top.value;
+        return this.head.value;
     }
 
     @Override
@@ -60,7 +69,7 @@ public class Stack<E> implements AbstractStack<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            private Node<E> current = top;
+            private Node<E> current = head;
 
             @Override
             public boolean hasNext() {
@@ -70,7 +79,7 @@ public class Stack<E> implements AbstractStack<E> {
             @Override
             public E next() {
                 E value = this.current.value;
-                this.current = this.current.prev;
+                this.current = this.current.next;
                 return value;
             }
         };
@@ -81,5 +90,4 @@ public class Stack<E> implements AbstractStack<E> {
             throw new IllegalStateException();
         }
     }
-
 }
