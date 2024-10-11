@@ -2,8 +2,10 @@ package implementations;
 
 import interfaces.Solvable;
 
+import java.util.ArrayDeque;
+
 public class BalancedParentheses implements Solvable {
-    private String parentheses;
+    private final String parentheses;
 
     public BalancedParentheses(String parentheses) {
         this.parentheses = parentheses;
@@ -12,7 +14,15 @@ public class BalancedParentheses implements Solvable {
     @Override
     public Boolean solve() {
         ArrayDeque<Character> openBrackets = new ArrayDeque<>();
-        boolean isBalanced = true;
+
+        if (this.parentheses == null) {
+            return false;
+        }
+
+        if (this.parentheses.isEmpty()) {
+            return true;
+        }
+
         for (int i = 0; i < this.parentheses.length(); i++) {
             char currentBracket = this.parentheses.charAt(i);
 
@@ -20,23 +30,16 @@ public class BalancedParentheses implements Solvable {
                 openBrackets.push(currentBracket);
             } else {
                 if (openBrackets.isEmpty()) {
-                    isBalanced = false;
-                    break;
+                    return false;
                 }
                 char lastOpenBracket = openBrackets.pop();
-                if (currentBracket == ')' && lastOpenBracket != '(') {
-                    isBalanced = false;
-                    break;
-                } else if (currentBracket == '}' && lastOpenBracket != '{') {
-                    isBalanced = false;
-                    break;
-                } else if (currentBracket == ']' && lastOpenBracket != '[') {
-                    isBalanced = false;
-                    break;
+                if ((currentBracket == ')' && lastOpenBracket != '(') ||
+                    (currentBracket == '}' && lastOpenBracket != '{') ||
+                    (currentBracket == ']' && lastOpenBracket != '[')) {
+                    return false;
                 }
             }
-
         }
-        return isBalanced;
+        return openBrackets.isEmpty();
     }
 }
