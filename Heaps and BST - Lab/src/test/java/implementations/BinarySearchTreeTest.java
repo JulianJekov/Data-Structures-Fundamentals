@@ -56,6 +56,16 @@ public class BinarySearchTreeTest {
     }
 
     @Test
+    public void testContainsShouldReturnTrue() {
+        assertTrue(bst.contains(12));
+    }
+
+    @Test
+    public void testContainsShouldReturnFalse() {
+        assertFalse(bst.contains(-12));
+    }
+
+    @Test
     public void testSearchCheckReturnedTreeStructure() {
         AbstractBinarySearchTree<Integer> searched = bst.search(5);
 
