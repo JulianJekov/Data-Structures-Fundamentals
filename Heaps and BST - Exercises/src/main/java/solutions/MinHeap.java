@@ -22,7 +22,7 @@ public class MinHeap<E extends Comparable<E> & Decrease<E>> implements Heap<E> {
     @Override
     public void add(E element) {
         this.elements.add(element);
-        this.heapifyUp();
+        this.heapifyUp(this.elements.size() - 1);
     }
 
     @Override
@@ -43,13 +43,14 @@ public class MinHeap<E extends Comparable<E> & Decrease<E>> implements Heap<E> {
 
     @Override
     public void decrease(E element) {
-        
+        int elementIndex = this.elements.indexOf(element);
+        E heapElement = this.elements.get(elementIndex);
+        heapElement.decrease();
+        this.heapifyUp(elementIndex);
     }
 
-    private void heapifyUp() {
-        int index = getLastElement();
+    private void heapifyUp(int index) {
         int parentIndex = getParentIndex(index);
-
         while (index > 0 && isLess(index, parentIndex)) {
             Collections.swap(this.elements, index, parentIndex);
             index = parentIndex;
