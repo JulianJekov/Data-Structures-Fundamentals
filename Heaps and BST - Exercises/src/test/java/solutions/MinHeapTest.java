@@ -39,6 +39,14 @@ public class MinHeapTest {
         assertEquals(8, this.minHeap.size());
     }
 
+
+    @Test
+    public void testHeapifyDown() {
+        minHeap.poll();
+        assertEquals(6, minHeap.peek().getPrice());
+        minHeap.poll();
+        assertEquals(8, minHeap.peek().getPrice());
+    }
     @Test
     public void testDecreaseSingleElement() {
         MinHeap<Product> heap = new MinHeap<>();
