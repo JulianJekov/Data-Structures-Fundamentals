@@ -1,7 +1,7 @@
 package solutions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BinaryTree {
     private int value;
@@ -55,6 +55,29 @@ public class BinaryTree {
     }
 
     public List<Integer> topView() {
-        return null;
+        Map<Integer, Pair<Integer, Integer>> map = new TreeMap<>();
+
+        traversTree(this, 0, 1, map);
+        return map.
+                values()
+                .stream()
+                .map(Pair::getKey)
+                .collect(Collectors.toList());
+    }
+
+    private void traversTree(BinaryTree binaryTree, int offset, int level,
+                             Map<Integer, Pair<Integer, Integer>> map) {
+
+        if (binaryTree == null) {
+            return;
+        }
+
+        Pair<Integer, Integer> currentValueLevel = map.get(offset);
+        if (currentValueLevel == null || level < currentValueLevel.getValue()) {
+            map.put(offset, new Pair<>(binaryTree.value, level));
+        }
+
+        traversTree(binaryTree.left, offset - 1, level + 1, map);
+        traversTree(binaryTree.right, offset + 1, level + 1, map);
     }
 }
