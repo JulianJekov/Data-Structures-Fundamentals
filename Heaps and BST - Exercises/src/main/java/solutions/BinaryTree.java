@@ -58,11 +58,34 @@ public class BinaryTree {
         Map<Integer, Pair<Integer, Integer>> map = new TreeMap<>();
 
         traversTree(this, 0, 1, map);
-        return map.
-                values()
+        return map
+                .values()
                 .stream()
                 .map(Pair::getKey)
                 .collect(Collectors.toList());
+    }
+    public List<Integer> bottomView() {
+        Map<Integer, Pair<Integer, Integer>> map = new TreeMap<>();
+        traversTreeBottomView(this, 0, 0, map);
+        return map
+                .values()
+                .stream()
+                .map(Pair::getKey)
+                .collect(Collectors.toList());
+    }
+
+    private void traversTreeBottomView(BinaryTree binaryTree, int offset, int level,
+                                       Map<Integer, Pair<Integer, Integer>> map) {
+
+        if (binaryTree == null) {
+            return;
+        }
+        Pair<Integer, Integer> currentValueLevel = map.get(offset);
+        if (currentValueLevel == null || level >= currentValueLevel.getValue()) {
+            map.put(offset, new Pair<>(binaryTree.value, level));
+        }
+        traversTreeBottomView(binaryTree.left, offset - 1, level + 1, map);
+        traversTreeBottomView(binaryTree.right, offset + 1, level + 1, map);
     }
 
     private void traversTree(BinaryTree binaryTree, int offset, int level,
