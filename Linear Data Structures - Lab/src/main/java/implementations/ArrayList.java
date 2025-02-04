@@ -126,7 +126,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void shiftLeft(int index) {
-        for (int i = index; i < this.size; i++) {
+        for (int i = index; i < this.size - 1; i++) {
             this.elements[i] = this.elements[i + 1];
         }
     }
